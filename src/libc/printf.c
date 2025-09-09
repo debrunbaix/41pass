@@ -6,12 +6,12 @@ int	puts_printf(const char *str)
 
 		for (i = 0; str[i] != '\0'; i++)
 		{
-				putchar(str[i]);
+				x41_putchar(str[i]);
 		}
 		return 0;
 }
 
-int		printf(const char *format, ...)
+int		x41_printf(const char *format, ...)
 {
 		va_list	ap;
 		va_start(ap, format);
@@ -20,7 +20,7 @@ int		printf(const char *format, ...)
 		{
 				if (*current_char != '%')
 				{
-						putchar(*current_char);
+						x41_putchar(*current_char);
 						continue;
 				}
 				++current_char;
@@ -31,7 +31,7 @@ int		printf(const char *format, ...)
 						case 'c':
 						{
 								int	ch = va_arg(ap, int);
-								putchar((char)ch);
+								x41_putchar((char)ch);
 								break;
 						}
 						case 's':
@@ -44,13 +44,13 @@ int		printf(const char *format, ...)
 						case 'd':
 						{
 								int	num = va_arg(ap, int);
-								putnbr(num);
+								x41_putnbr(num);
 								break;
 						}
 						default:
 						{
-								putchar('%');
-								putchar(*current_char);
+								x41_putchar('%');
+								x41_putchar(*current_char);
 								break;
 						}
 				}

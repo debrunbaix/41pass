@@ -1,6 +1,6 @@
 #include "../include/libc/unistd.h"
 
-char    *strcpy(char *dest, char *src)
+char    *x41_strcpy(char *dest, char *src)
 {
         int	i;
 

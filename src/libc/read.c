@@ -1,6 +1,6 @@
 #include "../include/libc/unistd.h"
 
-ssize_t	read(int fd, char *buf, size_t count)
+ssize_t	x41_read(int fd, char *buf, size_t count)
 {
 		long ret;
 

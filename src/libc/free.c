@@ -12,7 +12,7 @@ void	merge_with_next(struct block_header *b)
 		}
 }
 
-void	free(void *ptr)
+void	x41_free(void *ptr)
 {
 		if (!ptr) return;
 

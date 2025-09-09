@@ -1,6 +1,6 @@
 #include "../include/libc/unistd.h"
 
-pid_t waitpid(pid_t pid, int *wstatus, int options)
+pid_t x41_waitpid(pid_t pid, int *wstatus, int options)
 {
 		long	ret;
 		register void *r10 __asm__("r10") = 0;

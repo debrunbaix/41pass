@@ -1,6 +1,6 @@
 #include "../include/libc/unistd.h"
 
-int		execve(const char *pathname, char *const argv[], char *const envp[])
+int		x41_execve(const char *pathname, char *const argv[], char *const envp[])
 {
 		long	ret;
 

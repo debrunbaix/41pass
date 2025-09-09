@@ -1,7 +1,7 @@
 #include "../include/libc/unistd.h"
 
-int		putchar(int c)
+int		x41_putchar(int c)
 {
-		write(1, &c, 1);
+		x41_write(1, &c, 1);
 		return 0;
 }

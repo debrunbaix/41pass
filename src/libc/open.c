@@ -1,6 +1,6 @@
 #include "../include/libc/unistd.h"
 
-int		open(const char *filename, int flags, umode_t mode)
+int		x41_open(const char *filename, int flags, umode_t mode)
 {
 		long	ret;
 		__asm__ volatile(

@@ -46,7 +46,7 @@ static	struct block_header *request_space(size_t req_aligned)
 
 		if (total > (size_t)0x7fffffff) return 0;
 
-		void *mem = sbrk((int)total);
+		void *mem = x41_sbrk((int)total);
 		if (mem == (void *)-1) return 0;
 
 		struct block_header *b = (struct block_header *)mem;
@@ -61,7 +61,7 @@ static	struct block_header *request_space(size_t req_aligned)
 		return b;
 }
 
-void	*malloc(size_t size)
+void	*x41_malloc(size_t size)
 {
 		if (size == 0) return 0;
 

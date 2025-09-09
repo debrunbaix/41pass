@@ -1,6 +1,6 @@
 #include "../include/libc/unistd.h"
 
-int		brk(void *addr)
+int		x41_brk(void *addr)
 {
 		void	*ret;
 

@@ -1,6 +1,6 @@
 #include "../include/libc/unistd.h"
 
-int close(int fd)
+int x41_close(int fd)
 {
     long ret;
     __asm__ volatile(

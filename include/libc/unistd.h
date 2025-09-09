@@ -13,31 +13,31 @@
 #define	ERROR	-1
 #define	SUCCESS	0
 
-ssize_t	write(int fd, const void *buf, size_t count);
-int		putchar(int c);
-int		puts(const char *str);
-int		putnbr(int num);
-int		strcmp(const char *s1, const char *s2);
-int		strncmp(const char *s1, const char *s2, size_t n);
-ssize_t	read(int fd, char *buf, size_t count);
-void	exit(int status);
-int		printf(const char *format, ...);
-void	*sys_brk(void *addr);
-int		brk(void *addr);
-void	*sbrk(int increment);
-char	*strcpy(char *dest, char *src);
-void	*malloc(size_t size);
-void	free(void *ptr);
-void	*realloc(void *ptr, size_t size);
-ssize_t	getline(char **lineptr, size_t *n, int fd);
-int		starts_with(const char *s, const char *prefix);
-int		execve(const char *pathname, char *const argv[], char *const envp[]);
-pid_t	fork(void);
-pid_t	getpid(void);
-pid_t	waitpid(pid_t pid, int *wstatus, int options);
-int pipe(int pipefd[2]);
-int dup2(int oldfd, int newfd);
-int close(int fd);
-int		open(const char *filename, int flags, umode_t mode);
+ssize_t	x41_write(int fd, const void *buf, size_t count);
+int		x41_putchar(int c);
+int		x41_puts(const char *str);
+int		x41_putnbr(int num);
+int		x41_strcmp(const char *s1, const char *s2);
+int		x41_strncmp(const char *s1, const char *s2, size_t n);
+ssize_t	x41_read(int fd, char *buf, size_t count);
+void	x41_exit(int status);
+int		x41_printf(const char *format, ...);
+void	*x41_sys_brk(void *addr);
+int		x41_brk(void *addr);
+void	*x41_sbrk(int increment);
+char	*x41_strcpy(char *dest, char *src);
+void	*x41_malloc(size_t size);
+void	x41_free(void *ptr);
+void	*x41_realloc(void *ptr, size_t size);
+ssize_t	x41_getline(char **lineptr, size_t *n, int fd);
+int		x41_starts_with(const char *s, const char *prefix);
+int		x41_execve(const char *pathname, char *const argv[], char *const envp[]);
+pid_t	x41_fork(void);
+pid_t	x41_getpid(void);
+pid_t	x41_waitpid(pid_t pid, int *wstatus, int options);
+int		x41_pipe(int pipefd[2]);
+int		x41_dup2(int oldfd, int newfd);
+int		x41_close(int fd);
+int		x41_open(const char *filename, int flags, umode_t mode);
 
 #endif

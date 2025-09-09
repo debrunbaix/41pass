@@ -23,10 +23,10 @@ CRT0_OBJ  := $(BUILD_DIR)/crt0.o
 OBJS      := $(CRT0_OBJ) $(MAIN_OBJS) $(LIBC_OBJS)
 
 # Cible par défaut
-all: prog
-build: prog
+all: 41pass
+build: 41pass
 
-prog: $(OBJS)
+41pass: $(OBJS)
 	$(LD) $(LINK_ARGS) -o $@ $(CRT0_OBJ) $(MAIN_OBJS) $(LIBC_OBJS)
 
 # ---- Assemblage ----
@@ -53,7 +53,7 @@ clean:
 	rm -f $(BUILD_LIBC_DIR)/*.o $(BUILD_LIBC_DIR)/*.d
 
 fclean: clean
-	rm -f prog
+	rm -f 41pass
 
 re: fclean all
 

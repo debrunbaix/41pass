@@ -1,8 +1,8 @@
 #include "../include/libc/unistd.h"
 
-void	*sbrk(int increment)
+void	*x41_sbrk(int increment)
 {
-		void	*current = sys_brk(0);
+		void	*current = x41_sys_brk(0);
 
 		if (increment == 0) return current;
 
@@ -11,7 +11,7 @@ void	*sbrk(int increment)
 		uintptr_t	new_addr_u = current_u + increment_u;
 		void	*new_addr = (void *)new_addr_u;
 		
-		void	*ret = sys_brk(new_addr);
+		void	*ret = x41_sys_brk(new_addr);
 
 		if ((uintptr_t)ret < new_addr_u) return (void *)-1;
 		return current;

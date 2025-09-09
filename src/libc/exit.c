@@ -1,6 +1,6 @@
 #include "../include/libc/unistd.h"
 
-void	exit(int status)
+void	x41_exit(int status)
 {
 		__asm__ volatile(
 				"syscall"

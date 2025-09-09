@@ -1,13 +1,13 @@
 #include "../include/libc/unistd.h"
 
-int		puts(const char *str)
+int		x41_puts(const char *str)
 {
 		int i;
 
 		for (i = 0; str[i] != '\0'; i++)
 		{
-				putchar(str[i]);
+				x41_putchar(str[i]);
 		}
-		putchar('\n');
+		x41_putchar('\n');
 		return 0;
 }

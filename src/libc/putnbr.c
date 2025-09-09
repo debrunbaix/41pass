@@ -14,7 +14,7 @@ int		get_reversed_number(int num)
 		return reversed_nb;
 }
 
-int		putnbr(int num)
+int		x41_putnbr(int num)
 {
 		num = get_reversed_number(num);
 
@@ -22,7 +22,7 @@ int		putnbr(int num)
 		{
 				int mod = num % 10;
 				mod = mod + INTTOCHAR;
-				write(1, &mod, 1);
+				x41_write(1, &mod, 1);
 				num = num / 10; 
 		}
 }

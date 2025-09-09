@@ -1,6 +1,6 @@
 #include "../include/libc/unistd.h"
 
-pid_t	fork(void)
+pid_t	x41_fork(void)
 {
 		long	ret;
 

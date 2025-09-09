@@ -45,12 +45,12 @@ static	int try_expand_in_place(struct block_header *b, size_t req_aligned)
 		return 1;
 }
 
-void	*realloc(void *ptr, size_t size)
+void	*x41_realloc(void *ptr, size_t size)
 {
-		if (!ptr) return malloc(size);
+		if (!ptr) return x41_malloc(size);
 		if (size == 0)
 		{ 
-				free(ptr); 
+				x41_free(ptr); 
 				return 0;
 		}
 
@@ -65,13 +65,13 @@ void	*realloc(void *ptr, size_t size)
 
 		if (try_expand_in_place(b, req)) return ptr;
 
-		void *newp = malloc(size);
+		void *newp = x41_malloc(size);
 		if (!newp) return 0;
 
 		size_t to_copy = (b->size < req) ? b->size : req;
 		byte_copy(newp, ptr, to_copy);
 
-		free(ptr);
+		x41_free(ptr);
 		return newp;
 }
 

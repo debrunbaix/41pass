@@ -1,6 +1,6 @@
 #include "../include/libc/unistd.h"
 
-pid_t	getpid(void)
+pid_t	x41_getpid(void)
 {
 		long	ret;
 

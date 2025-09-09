@@ -15,7 +15,7 @@ void	xor_cipher(char *str, const char *key)
 }
 
 /**
- * Function to create db file and init the password to open it.
+ * Function to create db file and init the password to x41_open it.
  *
  * filename: Name of the db file.
  *
@@ -30,37 +30,37 @@ int		init(const char	*filename)
 		ssize_t	len;
 		uint8_t	canary_len;
 
-		puts("Master password: ");
+		x41_puts("Master password: ");
 
-		len = getline(&line, &n, STDIN);
+		len = x41_getline(&line, &n, STDIN);
 		if (len <= 0)
 		{
-				puts("Error reading password");
+				x41_puts("Error x41_reading password");
 				return 1;
 		}
 		if (len -1 < 12)
 		{
-				puts("Password too short");
+				x41_puts("Password too short");
 				return 1;
 		}
 
 		if (line[len - 1] == '\n') line[len - 1] = '\0';
 		xor_cipher(canary, line);
-		free(line);
+		x41_free(line);
 		canary_len = sizeof(canary) - 1;
 
-		fd = open(filename, 577, 0644);
+		fd = x41_open(filename, 577, 0644);
 		if (fd < 0)
 		{
-				puts("Failed to create vault");
+				x41_puts("Failed to create vault");
 				return 1;
 		}
 
-		write(fd, &canary_len, 1);
-		write(fd, canary, sizeof(canary));
-		close(fd);
+		x41_write(fd, &canary_len, 1);
+		x41_write(fd, canary, sizeof(canary));
+		x41_close(fd);
 
-		puts("Vault initialized.");
+		x41_puts("Vault initialized.");
 		return 0;
 }
 
@@ -72,39 +72,39 @@ int		ask_pass(const char *filename)
 		char	*pass = NULL;
 		size_t	n = 0;
 
-		printf("DEBUG: canary[] %s\n", canary);
+		x41_printf("DEBUG: canary[] %s\n", canary);
 
-		fd = open(filename, 0, 0);
+		fd = x41_open(filename, 0, 0);
 		if (fd < 0)
 		{
-				puts("Failed to open file.");
+				x41_puts("Failed to x41_open file.");
 				return ERROR;
 		}
-		if (read(fd, &len, 1) != 1)
+		if (x41_read(fd, &len, 1) != 1)
 		{
-				puts("failed to read canary len.");
+				x41_puts("failed to x41_read canary len.");
 				return ERROR;
 		}
-		if (read(fd, buffer, len) != len)
+		if (x41_read(fd, buffer, len) != len)
 		{
-				puts("Failed to read canary.");
-				close(fd);
+				x41_puts("Failed to x41_read canary.");
+				x41_close(fd);
 				return ERROR;
 		}
 		buffer[len] = '\0';
-		getline(&pass, &n, STDIN);
-		printf("DEBUG: buffer[] %s\n", buffer);
-		printf("DEBUG: pass %s\n", pass);
+		x41_getline(&pass, &n, STDIN);
+		x41_printf("DEBUG: buffer[] %s\n", buffer);
+		x41_printf("DEBUG: pass %s\n", pass);
 		xor_cipher(buffer, pass);
-		printf("DEBUG: buffer[] after %s\n", buffer);
-		if (strncmp(buffer, canary, len) != 0)
+		x41_printf("DEBUG: buffer[] after %s\n", buffer);
+		if (x41_strncmp(buffer, canary, len) != 0)
 		{
-				puts("Wrong password");
-				close(fd);
+				x41_puts("Wrong password");
+				x41_close(fd);
 				return ERROR;
 		}
-		puts("Good pass");
-		close(fd);
+		x41_puts("Good pass");
+		x41_close(fd);
 		return SUCCESS;
 }
 
@@ -127,9 +127,9 @@ int		get_entry(const char *filename)
 int		main(int argc, char **argv, char **envp)
 {
 		if (argc < 3) return 1;
-		if (strcmp(argv[1], "init") == 0) return init(argv[2]);
-		if (strcmp(argv[1], "add") == 0 && argc == 4) return post(argv[2], argv[3]);
-		if (strcmp(argv[1], "get") == 0 && argc == 4) return get(argv[2], argv[3]);
-		if (strcmp(argv[1], "list") == 0) return get_entry(argv[2]);
+		if (x41_strcmp(argv[1], "init") == 0) return init(argv[2]);
+		if (x41_strcmp(argv[1], "add") == 0 && argc == 4) return post(argv[2], argv[3]);
+		if (x41_strcmp(argv[1], "get") == 0 && argc == 4) return get(argv[2], argv[3]);
+		if (x41_strcmp(argv[1], "list") == 0) return get_entry(argv[2]);
 		return 0;
 }

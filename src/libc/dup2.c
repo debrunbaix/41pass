@@ -1,6 +1,6 @@
 #include "../include/libc/unistd.h"
 
-int dup2(int oldfd, int newfd)
+int x41_dup2(int oldfd, int newfd)
 {
     long ret;
     __asm__ volatile(

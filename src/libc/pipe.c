@@ -1,6 +1,6 @@
 #include "../include/libc/unistd.h"
 
-int pipe(int pipefd[2])
+int x41_pipe(int pipefd[2])
 {
     long ret;
     __asm__ volatile(

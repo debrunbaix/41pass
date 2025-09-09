@@ -1,6 +1,6 @@
 #include "../include/libc/unistd.h"
 
-ssize_t write(int fd, const void *buf, size_t count)
+ssize_t x41_write(int fd, const void *buf, size_t count)
 {
 		long	ret;
 
