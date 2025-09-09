@@ -2,9 +2,9 @@
 #define	MINI_LIBC_UNISTD_H
 
 #include "types.h"
-#include "stdarg.h"
+#include "x41_stdarg.h"
 #include "signal.h"
-#include "sys/wait.h"
+#include "sys/x41_wait.h"
 
 /* Standard descriptor. */
 #define	STDIN	0

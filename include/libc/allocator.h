@@ -12,7 +12,7 @@
 */
 
 #include "types.h"   /* size_t, uintptr_t, etc. */
-#include "unistd.h"  /* sbrk() */
+#include "x41_unistd.h"  /* sbrk() */
 
 #define ALIGNMENT     16UL
 #define ALIGN_UP(n)   (((n) + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1))
