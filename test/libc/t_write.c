@@ -55,11 +55,13 @@ static void test_invalid_fd(void) {
 /* 4. Write to a temporary file and read it back*/
 static void test_file_io(void) {
     const char msg[] = "File I/O Test\n";
-    const char filename[] = "/tmp/test_write.txt";
+    const char filename[] = "build/test/test_write.txt";
     
     // Open the file in mode 0660 O_WRONLY|O_CREAT|O_TRUNC
     int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0660);
     int errsv = errno;
+    printf("print %d", O_CREAT);
+    printf("fd=%d, errsv=%zu, strerror=%s\n", fd, errsv, strerror(errsv));
     assert(fd >= 0); // open succeeded
     assert(errsv == 0); // x41_errno is 0
     
@@ -118,7 +120,7 @@ static void test_zero_length(void) {
 /* 7. Write to a  read-only file and read it back*/
 static void test_file_read_only(void) {
     const char msg[] = "Read-only File I/O Test\n";
-    const char filename[] = "/tmp/test_write.txt";
+    const char filename[] = "build/test/test_write.txt";
     
     // Open the file O_RDONLY|O_CREAT|O_TRUNC
     int fd = open(filename, O_RDONLY | O_CREAT | O_TRUNC);
