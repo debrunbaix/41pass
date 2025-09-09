@@ -19,7 +19,7 @@ int		x41_puts(const char *str);
 int		x41_putnbr(int num);
 int		x41_strcmp(const char *s1, const char *s2);
 int		x41_strncmp(const char *s1, const char *s2, size_t n);
-ssize_t	x41_read(int fd, char *buf, size_t count);
+ssize_t	x41_read(int fd, void *buf, size_t count);
 void	x41_exit(int status);
 int		x41_printf(const char *format, ...);
 void	*x41_sys_brk(void *addr);

@@ -112,7 +112,7 @@ static void test_zero_length(void) {
 /* 6. Read from a write-only file - expected EBADF */
 static void test_file_write_only(void) {
     const char msg[] = "This won't be read";
-    const char filename[] = "/tmp/test_write_only.txt";
+    const char filename[] = "build/test/test_write_only.txt";
     // Create and open the file O_WRONLY|O_CREAT|O_TRUNC
     int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC);
     int errsv = errno;
