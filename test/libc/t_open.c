@@ -1,5 +1,6 @@
 #include "x41_errno.h"
 #include "colors.h"
+#include "x41_fcntl.h"
 #include  <errno.h>
 #include  <assert.h>
 #include  <fcntl.h>
@@ -10,6 +11,7 @@
 #include  <sys/types.h>
 #include  <sys/wait.h>
 #include  <sys/stat.h>
+#include  <sys/types.h>
 
 #if defined(__GNUC__)
     extern __thread int x41_errno;

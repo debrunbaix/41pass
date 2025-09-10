@@ -9,6 +9,7 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #if defined(__GNUC__)
     extern __thread int x41_errno;
