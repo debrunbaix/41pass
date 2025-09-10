@@ -1,5 +1,6 @@
 #include "../include/pwman.h"
-#include        "../include/libc/x41_unistd.h"
+#include "../include/libc/x41_unistd.h"
+#include "../include/libc/x41_errno.h"
 
 /**
  * Créer un nouveau nœud
@@ -21,14 +22,14 @@ node_t	*create_node(const char *entry, const char *password)
  */
 void	free_list(node_t *head)
 {
-		node_t *current = head;
 		node_t *next;
 
-		while (current)
+		while (head)
 		{
-				next = current->next;
-				x41_free(current);
-				current = next;
+				next = head->next;
+				x41_bzero(head, sizeof(node_t));
+				x41_free(head);
+				head = next;
 		}
 }
 
@@ -70,7 +71,6 @@ int		init(const char *filename)
 		node_t *head;
 		char *master_password;
 		char encrypted_master[MAX_PASSWORD_SIZE];
-		int fd;
 
 		// Demander le master password
 		master_password = prompt_password("Entrez le master password: ");

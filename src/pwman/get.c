@@ -1,4 +1,80 @@
 #include "../include/pwman.h"
+#include "../include/libc/colors.h"
+
+int delete_entry(struct data *data, const char *entry){
+	node_t *current = data->head->next; // Skip le nœud MASTER
+	node_t *prev = NULL;
+	
+	// Chercher l'entrée
+	while (current) {
+		if (x41_strcmp(current->entry, entry) == 0) {
+			// Trouvé, supprimer le nœud
+			if (prev) {
+				prev->next = current->next;
+			} else {
+				// Suppression du nœud head (MASTER)
+				data->head = current->next;
+			}
+			x41_bzero(current, sizeof(node_t));
+			x41_free(current);
+			x41_printf("Entrée '"COLOR_MAGENTA"%s"COLOR_RESET"' supprimée avec succès\n", entry);
+			return SUCCESS;
+		}
+		prev = current;
+		current = current->next;
+	}
+	x41_printf("Entrée '"COLOR_MAGENTA"%s"COLOR_RESET"' non trouvée\n", entry);
+	return ERROR;
+}
+
+int add_entry(struct data *data, const char *entry, const char *password){
+	char encrypted_password[MAX_PASSWORD_SIZE];
+	
+	
+	// Vérifier si l'entrée existe déjà
+	node_t *current = data->head->next;  // Skip le nœud MASTER
+	while (current) {
+		if (x41_strcmp(current->entry, entry) == 0) {
+			x41_printf("L'entrée '"COLOR_MAGENTA"%s"COLOR_RESET"' existe déjà\n", entry);
+			return ERROR;
+		}
+		current = current->next;
+	}
+
+	// Chiffrer le mot de passe
+	x41_strcpy(encrypted_password, password);
+	simple_encrypt(encrypted_password, MAX_PASSWORD_SIZE);
+	// Ajouter la nouvelle entrée au début de la liste (après MASTER)
+	node_t *new_node = create_node(entry, password);
+	if (!new_node) {
+		x41_puts("Erreur: impossible de créer la nouvelle entrée");
+		return ERROR;
+	}
+	
+	new_node->next = data->head->next;
+	data->head->next = new_node;
+	return SUCCESS;
+}
+
+node_t *find_entry(struct data *data, const char *entry){
+	// Chercher l'entrée
+    node_t *current = data->head->next;  // Skip le nœud MASTER
+    char decrypted_password[MAX_PASSWORD_SIZE];
+	
+	while (current) {
+        if (x41_strcmp(current->entry, entry) == 0) {
+            // Déchiffrer et afficher le mot de passe
+            x41_strcpy(decrypted_password, current->password);
+            simple_decrypt(decrypted_password, MAX_PASSWORD_SIZE);
+            
+            x41_printf("Password pour '"COLOR_MAGENTA"%s"COLOR_RESET"': %s\n", entry, decrypted_password);
+            return current;
+        }
+        current = current->next;
+    }
+	x41_printf("Entrée '"COLOR_MAGENTA"%s"COLOR_RESET"' non trouvée\n", entry);
+	return NULL;
+}
 
 /**
  * Récupérer un mot de passe spécifique

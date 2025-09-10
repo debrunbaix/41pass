@@ -5,6 +5,14 @@
 #define O_CREAT  64
 #define O_TRUNC  512
 
+int file_exists(const char *filename)
+{
+    int fd = x41_open(filename, O_RDONLY, 0);
+    if (fd < 0) return 0;
+    x41_close(fd);
+    return 1;
+}
+
 /**
  * Charger la base de données depuis un fichier
  */

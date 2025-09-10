@@ -2,6 +2,7 @@
 #define PWMAN_H
 
 #include "libc/x41_unistd.h"
+#include "libc/x41_errno.h"
 #include "libc/types.h"
 
 #define MAX_ENTRY_SIZE 64
@@ -13,6 +14,14 @@ typedef struct node {
     char entry[MAX_ENTRY_SIZE];
     char password[MAX_PASSWORD_SIZE];
 } node_t;
+
+extern int x41_errno;  // Déclaré dans errno.c
+
+struct data {
+    char *master_password;
+    char *filename;
+    node_t *head;
+};
 
 // Fonctions de chiffrement
 void simple_encrypt(char *data, int len);
@@ -33,5 +42,14 @@ int get_entry(const char *filename);
 // Utilitaires
 int verify_master_password(node_t *head, const char *master_password);
 char *prompt_password(const char *prompt);
+int add_entry(struct data *data, const char *entry, const char *password);
+node_t *find_entry(struct data *data, const char *entry);
+int delete_entry(struct data *data, const char *entry);
+int file_exists(const char *filename);
+
+// REPL interactive
+int interactive_REPL(struct data *data);
+int help(void);
+int connexion(struct data *data);
 
 #endif
