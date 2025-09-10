@@ -13,6 +13,7 @@ BUILD_SRC_DIR   := $(BUILD_DIR)/src
 BUILD_LIBC_DIR  := $(BUILD_SRC_DIR)/libc
 BUILD_PWMAN_DIR := $(BUILD_SRC_DIR)/pwman
 BUILD_TEST_DIR  := $(BUILD_DIR)/test/libc
+BUILD_TEST_PWMAN_DIR  := $(BUILD_DIR)/test/pwman
 
 # Sources & objets
 MAIN_SRCS  := $(wildcard src/*.c)
@@ -28,7 +29,7 @@ OBJS       := $(CRT0_OBJ) $(MAIN_OBJS) $(LIBC_OBJS) $(PWMAN_OBJS)
 
 # Tests
 TEST_LIBC_SRCS := $(patsubst %, test/libc/t_%.c, \
-					getline open read write strcmp)
+					getline open read write strcm putchar)
 TEST_LIBC_OBJS  := $(patsubst %.c, $(BUILD_DIR)/%.o, $(TEST_LIBC_SRCS))
 TEST_LIBC_BINS  := $(patsubst %.o, %, $(TEST_LIBC_OBJS))
 
@@ -69,6 +70,8 @@ $(BUILD_TEST_DIR)/%.o: test/libc/%.c | $(BUILD_TEST_DIR)
 
 $(TEST_LIBC_BINS) : $(BUILD_TEST_DIR)/% : $(BUILD_TEST_DIR)/%.o $(LIBC_OBJS) | $(BUILD_TEST_DIR)
 	$(CC) $(MAIN_COMP_ARGS) $^ -o $@ -g -fsanitize=address,leak,undefined
+
+
 
 # Création des dossiers si besoin
 $(BUILD_DIR) $(BUILD_SRC_DIR) $(BUILD_LIBC_DIR) $(BUILD_PWMAN_DIR) $(BUILD_TEST_DIR) :
