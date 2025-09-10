@@ -9,12 +9,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#if defined(__GNUC__)
-    extern __thread int x41_errno;
-#else
-    #error "Thread‑local storage x41_errno not implemented"
-#endif
-
 int x41_strncmp(const char *s1, const char *s2, size_t n);
 
 static int tests_run = 0;

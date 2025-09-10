@@ -12,12 +12,6 @@
 #include <sys/wait.h>
 #include <stdio.h>
 
-#if defined(__GNUC__)
-    extern __thread int x41_errno;
-#else
-    #error "Thread‑local storage x41_errno not implemented"
-#endif
-
 int x41_printf(const char *format, ...);
 
 static int tests_run = 0;

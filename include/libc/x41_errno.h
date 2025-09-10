@@ -2,7 +2,7 @@
 #define X41_ERRNO_H
 
 #if defined(__GNUC__)
-    extern __thread int x41_errno;
+    extern int x41_errno;
 #else
     #error "Thread‑local storage errno not implemented"
 #endif

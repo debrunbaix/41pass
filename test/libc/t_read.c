@@ -10,12 +10,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#if defined(__GNUC__)
-    extern __thread int x41_errno;
-#else
-    #error "Thread‑local storage x41_errno not implemented"
-#endif
-
 ssize_t x41_read(int fd, const void *buf, size_t count);
 
 static int tests_run = 0;
