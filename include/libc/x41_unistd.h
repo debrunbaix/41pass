@@ -40,4 +40,12 @@ int		x41_dup2(int oldfd, int newfd);
 int		x41_close(int fd);
 int		x41_open(const char *filename, int flags, mode_t mode);
 
+
+void x41_bzero(void *s, size_t n);
+size_t x41_strlen(const char *s);
+size_t x41_strcspn(const char *s, const char *reject);
+char *x41_readline(const char *prompt);
+char *x41_strerror(int errnum);
+char *x41_strdup(const char *s);
+
 #endif

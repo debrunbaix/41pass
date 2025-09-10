@@ -29,7 +29,7 @@ OBJS       := $(CRT0_OBJ) $(MAIN_OBJS) $(LIBC_OBJS) $(PWMAN_OBJS)
 
 # Tests
 TEST_LIBC_SRCS := $(patsubst %, test/libc/t_%.c, \
-					printf getline open read write strcmp puts strcpy strncmp putchar putnbr close)
+					printf getline open read write strcmp puts strcpy strncmp strdup putchar putnbr close bzero strcspn strlen readline)
 TEST_LIBC_OBJS  := $(patsubst %.c, $(BUILD_DIR)/%.o, $(TEST_LIBC_SRCS))
 TEST_LIBC_BINS  := $(patsubst %.o, %, $(TEST_LIBC_OBJS))
 
