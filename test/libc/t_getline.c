@@ -24,21 +24,21 @@ static int tests_passed = 0;
 static int tests_failed = 0;
 
 int make_tempfile(const char *content) {
-    const char *filename = "/tmp/temporary_file.txt";
+    const char *filename = "build/test/temporary_file.txt";
     int fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-    if (fd < 0) return -1;
+
+    assert(fd >= 0);
 
     if (content) {
         ssize_t len = strlen(content);
-        if (write(fd, content, len) != len) {
-            close(fd);
-            return -1;
-        }
-        lseek(fd, 0, SEEK_SET); // rewind for reading
+        ssize_t ret = write(fd, content, len);
+        assert(ret == len); // the content was written
+
+        assert(lseek(fd, 0, SEEK_SET) == 0); // rewind for reading
     }
 
     // clean
-    unlink(filename);
+    assert(unlink(filename) == 0);
     return fd;
 }
 
@@ -54,7 +54,7 @@ static void test_basic_line(void) {
     assert(strcmp(line, "Hello, world!\n") == 0);
     assert(len >= read);
 
-    free(line);
+    x41_free(line);
     close(fd);
 }
 
@@ -68,35 +68,34 @@ static void test_empty_line(void) {
     assert(read > 0);
     assert(strcmp(line, "\n") == 0);    
 
-    free(line);
+    x41_free(line);
     close(fd);
 }
 
-
 /* 3. Test multiple lines */
 static void test_multiple_lines(void) {
-    int fd = make_tempfile("First line\nSecond line\nThird line\n");
+    int fd = make_tempfile("First line\nSecond line\nThird line");
     char *line = NULL;
     size_t len = 0;
 
     ssize_t read = x41_getline(&line, &len, fd);
     assert(read > 0);
     assert(strcmp(line, "First line\n") == 0);
-    free(line);
+    x41_free(line);
 
     line = NULL;
     len = 0;
     read = x41_getline(&line, &len, fd);
     assert(read > 0);
     assert(strcmp(line, "Second line\n") == 0);
-    free(line);
+    x41_free(line);
 
     line = NULL;
     len = 0;
     read = x41_getline(&line, &len, fd);
     assert(read > 0);
-    assert(strcmp(line, "Third line\n") == 0);  
-    free(line);
+    assert(strcmp(line, "Third line") == 0);
+    x41_free(line);
     close(fd);
 }  
 
@@ -108,6 +107,8 @@ static void test_null_pointer(void) {
     
     assert(read == -1);
     assert(x41_errno == EINVAL);
+    
+    x41_free(NULL); // Should do nothing and not crash
 
     close(fd);
 }
@@ -120,7 +121,9 @@ static void test_null_size_pointer(void) {
     
     assert(read == -1);
     assert(x41_errno == EINVAL);
-    
+
+    x41_free(line); // Should do nothing and not crash
+
     close(fd);
 }
 
@@ -131,6 +134,8 @@ static void test_invalid_fd(void) {
     ssize_t read = x41_getline(&line, &len, -1); // Invalid fd
     assert(read == -1);
     assert(x41_errno == EBADF);
+    
+    x41_free(line);
 }
 
 /* 7. Allocation failure simulation - Should return -1 and ENOMEM */
@@ -148,6 +153,8 @@ static void test_allocation_failure(void) {
     assert(read == -1);
     assert(x41_errno == ENOMEM);
     close(fd);
+    
+    x41_free(line);
 } */
 
 /* 8. Test Empty file */
@@ -158,16 +165,17 @@ static void test_empty_file(void) {
     ssize_t read = x41_getline(&line, &len, fd);
     assert(read == -1); // EOF immediately
     assert(x41_errno == 0); // No error, just EOF
-    free(line);
+    x41_free(line);
     close(fd);
 }
 
 /* 9. Test Long line  - checks dynamic buffer growth */
 static void test_long_line(void) {
     // Create a long line of 10,000 'A's followed by a newline
-    char *long_line = (char *)malloc(10001);
+    char *long_line = (char *)malloc(10002);
     memset(long_line, 'A', 10000);
     long_line[10000] = '\n';
+    long_line[10001] = '\0';
 
     int fd = make_tempfile(long_line);
     free(long_line);
@@ -183,7 +191,7 @@ static void test_long_line(void) {
         assert(line[i] == 'A');
     }
 
-    free(line);
+    x41_free(line);
     close(fd);
 }
 
@@ -197,7 +205,7 @@ static void test_eof_without_newline(void) {
     assert(read == sizeof("No newline at end") - 1); 
     assert(strcmp(line, "No newline at end") == 0);
 
-    free(line);
+    x41_free(line);
     close(fd);
 }
 
@@ -206,7 +214,7 @@ static void test_pipe_input(void) {
     int pipefd[2];
     assert(pipe(pipefd) == 0);
 
-    const char *input = "Line from pipe\nSecond line\n";
+    const char *input = "Line from pipe\n\nThird line\n";
     write(pipefd[1], input, strlen(input));
     close(pipefd[1]); // Close write end to simulate EOF
 
@@ -214,21 +222,24 @@ static void test_pipe_input(void) {
     size_t len = 0;
 
     ssize_t read = x41_getline(&line, &len, pipefd[0]);
-    assert(read == (ssize_t)strlen(input));
+    assert(read == (ssize_t)strlen("Line from pipe\n"));
     assert(strcmp(line, "Line from pipe\n") == 0);
 
     read = x41_getline(&line, &len, pipefd[0]);
-    assert(read == (ssize_t)strlen("Second line\n"));
-    assert(strcmp(line, "Second line\n") == 0);
+    assert(read == (ssize_t)strlen("\n"));
+    assert(strcmp(line, "\n") == 0);
+    
+    read = x41_getline(&line, &len, pipefd[0]);
+    assert(read == (ssize_t)strlen("Third line\n"));
+    assert(strcmp(line, "Third line\n") == 0);
 
     read = x41_getline(&line, &len, pipefd[0]);
     assert(read == -1); // EOF
     assert(x41_errno == 0); // No error, just EOF
 
-    free(line);
+    x41_free(line);
     close(pipefd[0]);
 }
-
 
 static void run_test(void (*test_func)(void), const char *test_name) {
     printf("Running %s:\n", test_name);

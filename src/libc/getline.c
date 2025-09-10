@@ -1,11 +1,15 @@
 #include "../include/libc/x41_unistd.h"     // read, ssize_t, size_t
 #include "../include/libc/allocator.h"  // malloc, realloc
+#include "../include/libc/x41_errno.h"   // x41_errno
 
 #define GL_INIT_CAP 128
 
 ssize_t x41_getline(char **lineptr, size_t *n, int fd)
 {
-		if (!lineptr || !n) return -1;
+		if (!lineptr || !n) {
+        	x41_errno = EINVAL;
+        return (-1);
+    }
 
 		if (*lineptr == 0 || *n == 0) {
 				*n = GL_INIT_CAP;
@@ -13,6 +17,7 @@ ssize_t x41_getline(char **lineptr, size_t *n, int fd)
 				if (!*lineptr)
 				{ 
 						*n = 0; 
+						x41_errno = ENOMEM;
 						return -1; 
 				}
 		}
@@ -38,6 +43,7 @@ ssize_t x41_getline(char **lineptr, size_t *n, int fd)
 						char *p = (char *)x41_realloc(*lineptr, new_cap);
 						if (!p)
 						{
+								x41_errno = ENOMEM;
 								(*lineptr)[pos] = '\0';
 								return (ssize_t)pos;
 						}

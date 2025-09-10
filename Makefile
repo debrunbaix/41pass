@@ -3,7 +3,7 @@ CC  := gcc
 LD  := ld
 
 # Flags
-MAIN_COMP_ARGS := -fno-stack-protector -MMD -MP -g -O0
+MAIN_COMP_ARGS := -fno-stack-protector -MMD -MP -g -O0 
 INCL_COMP_ARGS := $(MAIN_COMP_ARGS) -I include
 LINK_ARGS      := -e _start
 
@@ -68,7 +68,7 @@ $(BUILD_TEST_DIR)/%.o: test/libc/%.c | $(BUILD_TEST_DIR)
 	$(CC) $(MAIN_COMP_ARGS) -I include/libc -c $< -o $@
 
 $(TEST_LIBC_BINS) : $(BUILD_TEST_DIR)/% : $(BUILD_TEST_DIR)/%.o $(LIBC_OBJS) | $(BUILD_TEST_DIR)
-	$(CC) $(MAIN_COMP_ARGS) $^ -o $@
+	$(CC) $(MAIN_COMP_ARGS) $^ -o $@ -g -fsanitize=address,leak,undefined
 
 # Création des dossiers si besoin
 $(BUILD_DIR) $(BUILD_SRC_DIR) $(BUILD_LIBC_DIR) $(BUILD_PWMAN_DIR) $(BUILD_TEST_DIR) :

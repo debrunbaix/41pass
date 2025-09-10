@@ -23,17 +23,12 @@ typedef long				intptr_t;
 
 # ifndef __OFF_T__
 #  define __OFF_T__
-typedef long int	off_t;
+typedef long int	        off_t;
 # endif
 
 # ifndef __MODE_T__
 #  define __MODE_T__
-typedef signed int		    mode_t;
-# endif
-
-# ifndef __UMODE_T__
-#  define __UMODE_T__
-typedef unsigned int		umode_t;
+typedef unsigned int		    mode_t;
 # endif
 
 # ifndef __UINT8_T__
