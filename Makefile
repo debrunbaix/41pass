@@ -3,7 +3,7 @@ CC  := gcc
 LD  := ld
 
 # Flags
-MAIN_COMP_ARGS := -fno-stack-protector -MMD -MP -g -O0 
+MAIN_COMP_ARGS := -fno-stack-protector -MMD -MP -g -O0 -Wall -Wextra #-fsanitize=address,leak,undefined
 INCL_COMP_ARGS := $(MAIN_COMP_ARGS) -I include
 LINK_ARGS      := -e _start
 
@@ -29,7 +29,7 @@ OBJS       := $(CRT0_OBJ) $(MAIN_OBJS) $(LIBC_OBJS) $(PWMAN_OBJS)
 
 # Tests
 TEST_LIBC_SRCS := $(patsubst %, test/libc/t_%.c, \
-					getline open read write strcm putchar)
+					printf getline open read write strcmp puts strcpy strncmp putchar putnbr close)
 TEST_LIBC_OBJS  := $(patsubst %.c, $(BUILD_DIR)/%.o, $(TEST_LIBC_SRCS))
 TEST_LIBC_BINS  := $(patsubst %.o, %, $(TEST_LIBC_OBJS))
 
@@ -46,6 +46,10 @@ build: pwman
 
 pwman: $(OBJS)
 	$(LD) $(LINK_ARGS) -o $@ $(CRT0_OBJ) $(MAIN_OBJS) $(LIBC_OBJS) $(PWMAN_OBJS)
+
+test_bin: $(MAIN_OBJS) $(LIBC_OBJS) $(PWMAN_OBJS)
+	$(CC) $(MAIN_COMP_ARGS) -o $@ $^
+
 
 # ---- Assemblage ----
 $(CRT0_OBJ): crt0.asm | $(BUILD_DIR)
@@ -122,7 +126,11 @@ test_libc: $(TEST_LIBC_BINS) | $(BUILD_TEST_DIR)
 			failed=1; \
 		fi; \
 	done; \
-	exit $$failed
+	if [ $$failed -eq 0 ]; then \
+		echo "$(GREEN)All tests passed!$(RESET)"; \
+	else \
+		echo "$(RED)Some tests failed.$(RESET)"; \
+	fi
 
 # Inclusion des fichiers de dépendances générés par -MMD -MP
 -include $(OBJS:.o=.d)

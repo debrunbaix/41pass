@@ -1,4 +1,6 @@
 #include "../include/libc/x41_unistd.h"
+#include "../include/libc/x41_errno.h" 
+
 
 int x41_close(int fd)
 {
@@ -9,6 +11,11 @@ int x41_close(int fd)
         : "a"(3), "D"(fd)
         : "rcx", "r11", "memory"
     );
-    return (int)ret; /* 0 or -1 */
+        if (ret < 0) {
+        x41_errno = (int)(-ret);
+        return (-1);
+    }
+    x41_errno = 0;
+    return ret;
 }
 
