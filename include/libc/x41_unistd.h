@@ -25,7 +25,7 @@ int		x41_printf(const char *format, ...);
 void	*x41_sys_brk(void *addr);
 int		x41_brk(void *addr);
 void	*x41_sbrk(int increment);
-char	*x41_strcpy(char *dest, char *src);
+char	*x41_strcpy(char *dest, const char *src);
 void	*x41_malloc(size_t size);
 void	x41_free(void *ptr);
 void	*x41_realloc(void *ptr, size_t size);

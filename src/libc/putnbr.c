@@ -1,28 +1,16 @@
 #include "../include/libc/x41_unistd.h"
-#define INTTOCHAR 48
 
-int		get_reversed_number(int num)
-{
-		int reversed_nb = 0;
+int x41_putnbr(int num){
+    char buf[12] = {0}; // 11 for the sign and null terminator
+    const int sign = (num < 0) ? -1 : 1;
+    int i = sizeof(buf);
 
-		while(num > 0)
-		{
-				int mod = num % 10;
-				reversed_nb = reversed_nb * 10 + mod;
-				num = num / 10;
-		}
-		return reversed_nb;
-}
-
-int		x41_putnbr(int num)
-{
-		num = get_reversed_number(num);
-
-		while(num > 0)
-		{
-				int mod = num % 10;
-				mod = mod + INTTOCHAR;
-				x41_write(1, &mod, 1);
-				num = num / 10; 
-		}
+    while (i && (num > 9 || num < -9)) {
+        buf[--i] = (num % 10) * sign + '0';
+        num /= 10;
+    }
+    buf[--i] = num * sign + '0';
+    if (sign < 0)
+        buf[--i] = '-';
+    return(x41_write(1, buf + i, sizeof(buf) - i));
 }
