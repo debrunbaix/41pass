@@ -38,6 +38,6 @@ pid_t	x41_waitpid(pid_t pid, int *wstatus, int options);
 int		x41_pipe(int pipefd[2]);
 int		x41_dup2(int oldfd, int newfd);
 int		x41_close(int fd);
-int		x41_open(const char *filename, int flags, umode_t mode);
+int		x41_open(const char *filename, int flags, mode_t mode);
 
 #endif

@@ -25,7 +25,7 @@ static int tests_failed = 0;
 
 /* 1. Successful open of a newly created temporary file */
 static void test_create_and_open(void) {
-    const char filename[] = "/tmp/test_open_valid.txt";
+    const char filename[] = "build/test/test_open_valid.txt";
     int fd = x41_open(filename, O_CREAT | O_RDWR | O_TRUNC, 0600);
     int errsv = x41_errno;
     assert(fd >= 0 /* x41_open succeeded */); 
@@ -57,7 +57,7 @@ static void test_create_and_open(void) {
 
 /* 2. Open a non-existent file without O_CREAT - expected ENOENT */
 static void test_open_nonexistent(void) {
-    const char filename[] = "/tmp/nonexistent_file.txt";
+    const char filename[] = "build/test/nonexistent_file.txt";
     int fd = x41_open(filename, O_RDWR, 0);
     int errsv = x41_errno;
     assert(fd < 0 /* x41_open failed */); 
@@ -84,7 +84,7 @@ static void test_open_flags_only(void) {
 
 /* 4. Invalid flags combination - e.g., O_DIRECTORY on a regular file */
 static void test_open_invalid_flags_combination(void) {
-    const char filename[] = "/tmp/test_open_invalid_flags_combination.txt";
+    const char filename[] = "build/test/test_open_invalid_flags_combination.txt";
     // First, create a regular file
     int fd = x41_open(filename, O_CREAT | O_RDWR | O_TRUNC, 0600);
     int errsv = x41_errno;
